@@ -7,6 +7,7 @@ const tileCount = canvas.width / gridSize;
 let snake = [{ x: 10, y: 10 }];
 let dx = 0;
 let dy = 0;
+let score = 0;
 
 let food = {
   x: Math.floor(Math.random() * tileCount),
@@ -34,7 +35,9 @@ function updateGame() {
   const head = { x: snake[0].x + dx, y: snake[0].y + dy };
   snake.unshift(head);
 
+  // Comer comida
   if (head.x === food.x && head.y === food.y) {
+    score++;
     food = {
       x: Math.floor(Math.random() * tileCount),
       y: Math.floor(Math.random() * tileCount),
@@ -42,6 +45,28 @@ function updateGame() {
   } else {
     snake.pop();
   }
+
+  // Colisión con paredes
+  if (
+    head.x < 0 || head.x >= tileCount ||
+    head.y < 0 || head.y >= tileCount
+  ) {
+    resetGame();
+  }
+
+  // Colisión con sí mismo
+  for (let i = 1; i < snake.length; i++) {
+    if (head.x === snake[i].x && head.y === snake[i].y) {
+      resetGame();
+    }
+  }
+}
+
+function resetGame() {
+  alert("¡Game Over! Tu puntaje fue: " + score);
+  snake = [{ x: 10, y: 10 }];
+  dx = dy = 0;
+  score = 0;
 }
 
 function gameLoop() {
