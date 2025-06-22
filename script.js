@@ -1,5 +1,6 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
+const scoreElement = document.getElementById("score");
 
 const gridSize = 20;
 const tileCount = canvas.width / gridSize;
@@ -38,6 +39,7 @@ function updateGame() {
   // Comer comida
   if (head.x === food.x && head.y === food.y) {
     score++;
+    scoreElement.textContent = score;
     food = {
       x: Math.floor(Math.random() * tileCount),
       y: Math.floor(Math.random() * tileCount),
@@ -46,7 +48,7 @@ function updateGame() {
     snake.pop();
   }
 
-  // Colisión con paredes
+  // Colisión con bordes
   if (
     head.x < 0 || head.x >= tileCount ||
     head.y < 0 || head.y >= tileCount
@@ -67,6 +69,7 @@ function resetGame() {
   snake = [{ x: 10, y: 10 }];
   dx = dy = 0;
   score = 0;
+  scoreElement.textContent = score;
 }
 
 function gameLoop() {
